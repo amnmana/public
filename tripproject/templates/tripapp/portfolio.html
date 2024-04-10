@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <title>portfolio</title>
     <style>
+        div {
+            text-align:center
+        }
+
+        .btn-flat-simple {
+            position: relative;
+            display: inline-block;
+            font-weight: bold;
+            padding: 0.25em 0.5em;
+            text-decoration: none;
+            color: #00BCD4;
+            background: #ECECEC;
+            transition: .4s;
+        }
+
+        .btn-flat-simple:hover {
+            background: #00bcd4;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -13,11 +32,12 @@
         <p>「My trip record」は、旅行者が準備からの記録を振り返ることができるアプリです。</p>
         <p>各旅行で、持っていくもの・交通手段・宿泊先などの情報をまとめることができ、当日の旅行を滞りなく進めることができます。</p>
         <p>写真を各旅行で記録できるので、過去の旅行準備から思い出まで振り返ることができます。</p>
-        
+
         <a href="/media/ポートフォリオ完成/企画書(20240220).pdf">企画書</a>
         <a href="/media/ポートフォリオ完成/ER図 2024-02-28.png">ER図</a>
         <a href="/media/ポートフォリオ完成/画面遷移図 2024-02-22.png">画面遷移図</a>
         <a href="/media/ポートフォリオ完成/画面設計図 2024-04-10 011451.png">画面設計図</a>
+        <br><a href="{% url 'tripapp:home' %}" class="btn-flat-simple">アプリにアクセス</a></br>
     </div>
 </body>
 </html>
