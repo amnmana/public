@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST">
+{% csrf_token %}
+{{ regist_form.as_p}}
+<button type="submit"class="btn-circle-border-double">Registration</bottun>
+<button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:home' %}'">Back</button>
+</form>
+{% endblock %}

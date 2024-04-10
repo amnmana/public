@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div>{{ message.message }}</div>
+    {% endfor %}
+{% endif %}
+<form method='POST'>
+{% csrf_token %}
+{{ login_form.as_p }}
+<button type="submit" class="btn-circle-border-double">Login</button>
+<button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:home' %}'">Back</button>
+</form>
+{% endblock %}

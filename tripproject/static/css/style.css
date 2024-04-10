@@ -1,0 +1,99 @@
+@charset "utf-8";
+
+body {
+    margin-bottom: 500px;
+    margin-left: 400px;
+    margin-right: 100px;
+    margin-top: 200px;
+}
+
+p {
+    color: black;
+    /* background-color: #668ad8; */
+    width: calc(100% - 800px);
+    font-weight:bold;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 2;
+}
+
+a {
+    color: black;
+    /* background-color: #668ad8; */
+    font-weight:bold;
+    font-style: italic;
+    font-size: 30px;
+    line-height: 2;
+}
+
+.btn-circle-border-double{
+    display: inline-block;
+    text-decoration: none;
+    color: #668ad8;
+    font-size: 16px; /* フォントサイズを小さく調整 */
+    width: 120px;
+    height: 120px;
+    line-height: 120px;
+    border-radius: 50%;
+    border: double 4px #668ad8;
+    text-align: center;
+    overflow: hidden;
+    transition: .6s;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+      
+.btn-circle-border-double:hover {
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg); 
+}
+
+/* SaveボタンとBackボタンのスタイルをクラスに適用する場合 */
+.btn-circle-border-double {
+    margin-right: 20px; /* ボタン間に10pxの余白を追加（最後のボタンには不要かもしれません） */
+}
+
+.buttons-container {
+    display: flex;
+    gap: 10px; /* ボタン間の間隔 */
+}
+
+h1 {
+    color: #364e96;/*文字色*/
+    padding: 0.5em 0;/*上下の余白*/
+    border-top: solid 3px #364e96;/*上線*/
+    border-bottom: solid 3px #364e96;/*下線*/
+}
+
+ul {
+    color: #1e366a;
+    border-top: solid #1e366a 1px;/*上のボーダー*/
+    border-bottom: solid #1e366a 1px;/*下のボーダー*/
+    padding: 0.5em 0 0.5em 1.5em;
+}
+  
+ul {
+    line-height: 1.5;
+    padding: 0.5em 0;
+}
+
+.btn-flat-border {
+    display: inline-block;
+    padding: 0.3em 1em;
+    text-decoration: none;
+    color: #67c5ff;
+    border: solid 2px #67c5ff;
+    border-radius: 3px;
+    transition: .4s;
+    line-height: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .btn-flat-border:hover {
+    background: #67c5ff;
+    color: white;
+  }
+
+.delete-link {
+    font-size: 15px; /* またはお好みのサイズに */
+}

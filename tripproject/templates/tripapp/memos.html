@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>memos</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Information</h1>
+    <div>
+        {% for memo in memos %}
+            <div>
+                <h2>{{ memo.category }}</h2>
+                <p>{{ memo.detail }}</p>
+                <!-- 削除ボタン -->
+                <form action="{% url 'tripapp:delete_memo' memo.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-flat-border">Delete</button>
+                </form>
+            </div>
+        {% endfor %}
+            <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:addmemos' %}'">Edit</button>
+            <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' %}'">Back</button>
+    </div>
+</body>
+</html>

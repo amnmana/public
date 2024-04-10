@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Memo</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Add Information</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <button type="submit" class="btn-circle-border-double">Save</button>
+            <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' %}'">Back</button>
+        <div>
+    </form>
+</body>
+</html>

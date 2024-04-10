@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Trip Details</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Trip Details</h1>
+    <ul>
+        <li><a href="{% url 'tripapp:items' %}">What to bring</a></li>
+        <li><a href="{% url 'tripapp:memos' %}">Information</a></li>
+        <li><a href="{% url 'tripapp:locations' %}">Wanna go place</a></li>
+        <li><a href="{% url 'tripapp:pictures' %}">Pictures</a></li>
+
+        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:mypage' %}'">Back</button>
+    </ul>
+</body>
+</html>

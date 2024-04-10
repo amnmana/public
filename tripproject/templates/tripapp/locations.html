@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Locations</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var addButton = document.getElementById('add-location-button');
+            var form = document.getElementById('locations-form');
+
+            function addLocationField() {
+                var newField = document.createElement('div');
+                newField.innerHTML = `
+                    <p>
+                        <label for="name">名称:</label>
+                        <input type="text" name="name[]" required>
+                    </p>
+                    <p>
+                        <label for="address">住所:</label>
+                        <textarea name="address[]" required></textarea>
+                    </p>
+                    <button type="button" class="remove-location-button">削除</button>
+                `;
+                form.insertBefore(newField, addButton);
+
+                var removeButtons = document.getElementsByClassName('remove-location-button');
+                var newRemoveButton = removeButtons[removeButtons.length - 1];
+                newRemoveButton.addEventListener('click', function() {
+                    this.parentNode.remove();
+                });
+            }
+
+            addButton.addEventListener('click', addLocationField);
+
+            // 初期フィールドの削除ボタン用
+            var initialRemoveButton = document.querySelector('.remove-location-button');
+            if (initialRemoveButton) {
+                initialRemoveButton.addEventListener('click', function() {
+                    this.parentNode.remove();
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Wanna go place</h1>
+    <form method="post" id="locations-form">
+        {% csrf_token %}
+        <div id="dynamic-field">
+            <p>
+                <label for="name">Name:</label>
+                <input type="text" name="name[]" required>
+            </p>
+            <p>
+                <label for="address">Address:</label>
+                <textarea name="address[]" required></textarea>
+            </p>
+        </div>
+        <div>
+            <button type="button" class="btn-flat-border" id="add-location-button">新規登録</button>
+        </div>
+        <div>
+        <button type="submit" class="btn-circle-border-double">Save</button>
+        </div>
+    </form>
+        <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' %}'">Back</button>
+    <ul>
+        {% for location in locations %}
+            <li>{{ location.name }}: {{ location.address }} <a href="{% url 'tripapp:delete_location' location.id %}" class="delete-link">Delete</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pictures</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>Pictures</h1>
+    <div>
+        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:picturesupload' %}'">Edit</button>
+        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' %}'">Back</button>
+    </div>
+
+    <!-- 写真の表示 -->
+    <form action="{% url 'tripapp:bulk_delete_pictures' %}" method="post">
+        {% csrf_token %}
+        {% for picture in pictures %}
+        <div>
+            <input type="checkbox" name="picture_ids" value="{{ picture.id }}">
+            <img src="{{ picture.image.url }}" alt="Picture" style="width: 300px; height: auto;">
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn-flat-border">Delete Selected</button>
+    </form>
+    <script>
+    function submitDelete() {
+        if (confirm('Are you sure you want to delete the selected pictures?')) {
+            document.getElementById('deletePicturesForm').submit();
+        }
+    }
+    </script>
+</body>
+</html>
