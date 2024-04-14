@@ -8,9 +8,11 @@
     <script>
         function addItem() {
             var form = document.getElementById("itemsForm"); // フォームを取得
+            var addNewItemButton = document.getElementById("addNewItem"); // 新規登録ボタンを取得
             var newField = document.createElement("div"); // 新しいフィールドを作成
             newField.innerHTML = '<input type="text" name="name"> <button onclick="deleteItem(this.parentNode)">削除</button>';
-            form.insertBefore(newField, form.lastElementChild); // 保存ボタンの前に挿入
+            // 新規登録ボタンの親要素を取得し、新規登録ボタンの直前に新しいフィールドを挿入
+        addNewItemButton.parentNode.insertBefore(newField, addNewItemButton);
         }
 
         function deleteItem(element) {
@@ -20,20 +22,20 @@
 </head>
 <body>
     <h1>What to bring</h1>
-    <form id="itemsForm" method="POST" action="{% url 'tripapp:items_view' %}">
+    <form id="itemsForm" method="POST" action="{% url 'tripapp:items' trip_id=trip_id %}">
         {% csrf_token %}
         <div>
             <input type="text" name="name"> <button type="button" class="btn-flat-border" onclick="deleteItem(this.parentNode)">Delete</button>
         </div>
         <div>
-            <button type="button" class="btn-flat-border" onclick="addItem()">新規登録</button>
+            <button type="button" class="btn-flat-border" id="addNewItem" onclick="addItem()">新規登録</button>
         </div>
         <div>
             <button type="submit" class="btn-circle-border-double">Save</button>
         </div>
     </form>
         <div>
-            <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' %}'">Back</button>
+            <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
         </div> 
     <ul>
             {% for item in items %}
@@ -44,7 +46,7 @@
                         {{ item.name }}
                     </form>
                     <!-- 削除ボタンを追加 -->
-                    <form method="POST" action="{% url 'tripapp:delete_item' item.id %}" style="display: inline;">
+                    <form method="POST" action="{% url 'tripapp:delete_item' item_id=item.id trip_id=trip_id %}" style="display: inline;">
                         {% csrf_token %}
                         <!-- CSRFトークンを含める -->
                         <button type="submit" class="btn-flat-border">Delete</button>

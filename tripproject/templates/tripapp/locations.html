@@ -10,19 +10,20 @@
             var form = document.getElementById('locations-form');
 
             function addLocationField() {
+                var addButtonParent = addButton.parentNode;  // この行を関数内に移動
                 var newField = document.createElement('div');
                 newField.innerHTML = `
                     <p>
-                        <label for="name">名称:</label>
+                        <label for="name">Name:</label>
                         <input type="text" name="name[]" required>
                     </p>
                     <p>
-                        <label for="address">住所:</label>
+                        <label for="address">Address:</label>
                         <textarea name="address[]" required></textarea>
                     </p>
                     <button type="button" class="remove-location-button">削除</button>
                 `;
-                form.insertBefore(newField, addButton);
+                 addButtonParent.insertBefore(newField, addButton);
 
                 var removeButtons = document.getElementsByClassName('remove-location-button');
                 var newRemoveButton = removeButtons[removeButtons.length - 1];
@@ -64,10 +65,10 @@
         <button type="submit" class="btn-circle-border-double">Save</button>
         </div>
     </form>
-        <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' %}'">Back</button>
+        <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
     <ul>
         {% for location in locations %}
-            <li>{{ location.name }}: {{ location.address }} <a href="{% url 'tripapp:delete_location' location.id %}" class="delete-link">Delete</a></li>
+            <li>{{ location.name }}: {{ location.address }} <a href="{% url 'tripapp:delete_location' location_id=location.id trip_id=trip_id %}" class="delete-link">Delete</a></li>
         {% endfor %}
     </ul>
 </body>

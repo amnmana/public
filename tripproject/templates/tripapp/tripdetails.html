@@ -9,10 +9,10 @@
 <body>
     <h1>Trip Details</h1>
     <ul>
-        <li><a href="{% url 'tripapp:items' %}">What to bring</a></li>
-        <li><a href="{% url 'tripapp:memos' %}">Information</a></li>
-        <li><a href="{% url 'tripapp:locations' %}">Wanna go place</a></li>
-        <li><a href="{% url 'tripapp:pictures' %}">Pictures</a></li>
+        <li><a href="{% url 'tripapp:items' trip_id=trip_id %}">What to bring</a></li>
+        <li><a href="{% url 'tripapp:memos' trip_id=trip_id %}">Information</a></li>
+        <li><a href="{% url 'tripapp:locations' trip_id=trip_id %}">Wanna go place</a></li>
+        <li><a href="{% url 'tripapp:pictures' trip_id=trip_id %}">Pictures</a></li>
 
         <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:mypage' %}'">Back</button>
     </ul>

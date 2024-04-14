@@ -8,7 +8,8 @@
 </head>
 <body>
     <h1>New Trip</h1>
-    <form id="tripForm">
+    <form id="tripForm" method="post">
+        {% csrf_token %}
         <label for="destination">Destination</label>
         <input type="text" id="destination" name="destination" required><br><br>
         <label for="startDate">Start Date:</label>
@@ -18,33 +19,5 @@
         <button type="submit" class="btn-circle-border-double">Save</button>
         <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:mypage' %}'">Back</button>
     </form>
-
-    <script>
-        document.getElementById("tripForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            // フォームの値を取得
-            var destination = document.getElementById("destination").value;
-            var startDate = document.getElementById("startDate").value;
-            var endDate = document.getElementById("endDate").value;
-
-            // 保存するデータをオブジェクトにまとめる
-            var trip = {
-                destination: destination,
-                startDate: startDate,
-                endDate: endDate
-            };
-
-            // 既存の旅行情報を取得
-            var existingTrips = JSON.parse(localStorage.getItem("trips")) || [];
-            // 新しい旅行情報を追加
-            existingTrips.push(trip);
-            // ローカルストレージに保存
-            localStorage.setItem("trips", JSON.stringify(existingTrips));
-
-            // mypage.html にリダイレクト
-            window.location.href = "{% url 'tripapp:mypage' %}";
-        });
-    </script>
 </body>
 </html>
