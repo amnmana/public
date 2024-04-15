@@ -29,13 +29,12 @@
     {% endif %}
     
     <!-- 写真のアップロードフォーム -->
-    <form id="upload-form" action="{% url 'tripapp:picturesupload' %}" method="POST" enctype="multipart/form-data" style="margin: 10px;">
+    <form id="upload-form" action="{% url 'tripapp:picturesupload' trip_id=trip_id %}" method="POST" enctype="multipart/form-data" style="margin: 10px;">
         {% csrf_token %}
-        <p>＜同時に複数の写真を選択できます＞</p>
         <input type="file" multiple accept="image/*" id="multiple-files" name="image">
         <br>
         <!-- 戻るボタン -->
-        <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:pictures' %}'">Back</button>
+        <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:pictures' trip_id=trip_id %}'">Back</button>
         <!-- 保存ボタン -->
         <button type="submit" class="btn-circle-border-double" onclick="return validateForm()">Save</button>
     </form>

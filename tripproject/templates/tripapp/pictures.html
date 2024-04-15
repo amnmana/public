@@ -10,12 +10,12 @@
 <body>
     <h1>Pictures</h1>
     <div>
-        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:picturesupload' %}'">Edit</button>
-        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' %}'">Back</button>
+        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:picturesupload' trip_id=trip_id %}'">Edit</button>
+        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
     </div>
 
     <!-- 写真の表示 -->
-    <form action="{% url 'tripapp:bulk_delete_pictures' %}" method="post">
+    <form action="{% url 'tripapp:bulk_delete_pictures' trip_id=trip_id %}" method="post">
         {% csrf_token %}
         {% for picture in pictures %}
         <div>

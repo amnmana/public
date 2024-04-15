@@ -9,6 +9,7 @@ from .models import TestModel
 from .models import Picture
 from .models import Item
 from .models import Memo
+from .models import Trip
 
 # User = get_user_model()
 
@@ -96,3 +97,8 @@ class MemoForm(forms.ModelForm):
     class Meta:
         model = Memo
         fields = ['category', 'detail']
+
+class TripForm(forms.ModelForm):
+    class Meta:
+        model = Trip
+        fields = '__all__'  # または、フォームに含めたいフィールドをリスト形式で指定

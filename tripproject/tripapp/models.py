@@ -44,11 +44,6 @@ class User(AbstractBaseUser,PermissionsMixin):
     def __str__(self):
         return self.email
 
-class Trip(models.Model):
-    destination = models.CharField(max_length=100)
-    startDate = models.DateField()
-    endDate = models.DateField()
-
 class Location(models.Model):
     name = models.CharField(max_length=128, verbose_name="名称")
     address = models.TextField(verbose_name="住所")
@@ -63,11 +58,12 @@ class Picture(models.Model):
     image = models.ImageField(upload_to='images/')
 
 class Item(models.Model):
-    name = models.CharField(max_length=128)
-    checked = models.BooleanField(default=False)  # デフォルトはFalse、チェックされていない状態
+    name = models.CharField(max_length=100)
+    checked = models.BooleanField(default=False)
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)  # NULLを許容する
 
     def __str__(self):
-        return self.name
+        return self.name    
 
 class Memo(models.Model):
     category = models.CharField(max_length=128)
@@ -75,3 +71,8 @@ class Memo(models.Model):
 
     def __str__(self):
         return self.category
+
+class Trip(models.Model):
+    destination = models.CharField(max_length=100)
+    startDate = models.DateField()  # DateTimeField から DateField に変更する場合
+    endDate = models.DateField()

@@ -13,37 +13,16 @@
 
     <!-- 旅行情報を表示するための要素 -->
     <ul id="tripList">
-        <!-- 旅行情報のリストを表示 -->
+        {% for trip in trips %}
+        <li>
+            <a href="{% url 'tripapp:tripdetails' trip.id %}">{{ trip.destination }}</a>
+            <!-- 削除ボタン -->
+            <form action="{% url 'tripapp:delete_trip' trip.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-flat-border">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
     </ul>
-
-    <script>
-        // 新しい旅行情報がローカルストレージに保存されている場合、表示する
-        window.onload = function() {
-            var tripList = document.getElementById("tripList");
-            var existingTrips = JSON.parse(localStorage.getItem("trips")) || [];
-
-            // ローカルストレージに保存された旅行情報をリストに追加
-            existingTrips.forEach(function(trip, index) {
-                var tripItem = document.createElement("li");
-                var tripLink = document.createElement("a");
-                tripLink.textContent = trip.destination;
-                tripLink.setAttribute("href", "{% url 'tripapp:tripdetails' %}?tripId=" + index); // tripId はインデックス番号を使用
-                tripItem.appendChild(tripLink);
-
-                // 削除ボタンを作成
-                var deleteButton = document.createElement("button");
-                deleteButton.textContent = "Delete  ";
-                deleteButton.addEventListener("click", function() {
-                    // この旅行先を削除するロジックを追加
-                    existingTrips.splice(index, 1); // ローカルストレージからも削除する場合はここを追加
-                    tripList.removeChild(tripItem);
-                    localStorage.setItem("trips", JSON.stringify(existingTrips)); // ローカルストレージからも削除する場合はここを追加
-                });
-                tripItem.appendChild(deleteButton);
-
-                tripList.appendChild(tripItem);
-            });
-        };
-    </script>
 </body>
 </html>
