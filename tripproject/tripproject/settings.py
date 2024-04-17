@@ -112,6 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -171,3 +173,19 @@ LOGGING = {
         },
     },
 }
+
+LOGIN_REDIRECT_URL = '/tripapp/mypage/'  # ログイン後に遷移するURL
+
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+
+# SECURE_HSTS_SECONDS = 31536000  # 1年間
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True
+
+# SECURE_SSL_REDIRECT = True
+
+# # XSS保護を強化する
+# SECURE_BROWSER_XSS_FILTER = True
+# # クリックジャッキングを防ぐ
+# X_FRAME_OPTIONS = 'DENY'
