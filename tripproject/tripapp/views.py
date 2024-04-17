@@ -20,6 +20,7 @@ from .models import Memo
 from django.views.decorators.http import require_POST
 from .forms import TripForm
 from django.http import HttpResponse
+from .forms import LoginForm
 
 
 def home(request):
@@ -30,7 +31,7 @@ def regist(request):
     if regist_form.is_valid():
         try:
             regist_form.save()
-            return redirect('tripapp:home')
+            return redirect('tripapp:mypage')
         except ValidationError as e:
             regist_form.add_error('password', e)
     return render(
@@ -44,7 +45,7 @@ def user_login(request):
     if login_form.is_valid():
         email = login_form.cleaned_data.get('email')
         password = login_form.cleaned_data.get('password')
-        user = authenticate(email=email, password=password)
+        user = authenticate(request, username=email, password=password)
         if user:
             if user.is_active:
                 login(request, user)
@@ -52,12 +53,13 @@ def user_login(request):
             else:
                 messages.warning(request, 'User is not acctive.')
         else:
-            messages.warning(request,'Wrong user name or password.')
+            messages.warning(request,'Wrong mailaddress or password.')
     return render(
         request, 'tripapp/user_login.html', context={
             'login_form': login_form,
         }
     )
+
 
 def user_logout(request):
     logout(request)

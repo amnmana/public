@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, username, email, password=None):
+    def create_user(self, username, email, password=None, **extra_fields):
         if not email:
             raise ValueError('Enter Email!')
         user = self.model(
@@ -30,11 +30,16 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
+<<<<<<< HEAD
 
 class User(AbstractBaseUser,PermissionsMixin):
+=======
+        
+class User(AbstractBaseUser, PermissionsMixin):
+>>>>>>> ca47d1a4b41c88a05d1c3b2d9d1cd94fcd80301e
     username = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)  # デフォルトをTrueに変更
     is_staff = models.BooleanField(default=False)
 
     objects = UserManager()
