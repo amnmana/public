@@ -1,27 +1,82 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>memos</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>My Trip Records</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
 </head>
 <body>
-    <h1>Information</h1>
-    <div>
-        {% for memo in memos %}
-            <div>
-                <h2>{{ memo.category }}</h2>
-                <p>{{ memo.detail }}</p>
-                <!-- 削除ボタン -->
-                <form action="{% url 'tripapp:delete_memo' memo_id=memo.id trip_id=trip_id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-flat-border">Delete</button>
-                </form>
-            </div>
-        {% endfor %}
-            <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:addmemos' trip_id=trip_id %}'">Edit</button>
-            <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'tripapp:mypage' %}">マイページ</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">Trip Details -旅行詳細-</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Information -必要な情報-</li>
+    </ol>
+</nav>
+
+<h1>Information</h1>
+<div>
+    {% for memo in memos %}
+    <div id="memo{{ memo.id }}" class="memo-container">
+        <h2>{{ memo.category }}</h2>
+        <p id="detail{{ memo.id }}" style="white-space: pre-line;">{{ memo.detail }}</p>
+        <!-- 削除ボタン -->
+        <form action="{% url 'tripapp:delete_memo' memo_id=memo.id trip_id=trip_id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-flat-border">Delete</button>
+        </form>
+        <!-- 編集フォーム（デフォルトでは非表示） -->
+        <div style="display:none;" id="editForm{{ memo.id }}">
+            <input type="text" id="editDetail{{ memo.id }}" value="{{ memo.detail }}">
+            <button onclick="saveChanges({{ memo.id }})" class="btn-flat-border">Save</button>
+        </div>
+        <!-- 編集ボタン -->
+        <button onclick="editMemo({{ memo.id }})" class="btn-flat-border">Edit</button>
     </div>
+    {% endfor %}
+    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:addmemos' trip_id=trip_id %}'">New</button>
+    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
+</div>
+<script>
+function editMemo(memoId) {
+    var detailElement = document.getElementById('detail' + memoId);
+    var editForm = document.getElementById('editForm' + memoId);
+    detailElement.style.display = 'none';
+    editForm.style.display = 'block';
+}
+
+function saveChanges(memoId) {
+    var newDetail = document.getElementById('editDetail' + memoId).value;
+    var csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+    var url = `/tripapp/update_memo/1/`; // URLが正しいか確認してください
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': csrfToken
+        },
+        body: `id=${memoId}&detail=${encodeURIComponent(newDetail)}`
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP status ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            var detailElement = document.getElementById('detail' + memoId);
+            detailElement.innerText = newDetail;
+            detailElement.style.display = 'block';
+            var editForm = document.getElementById('editForm' + memoId);
+            editForm.style.display = 'none';
+        } else {
+            alert('更新に失敗しました。');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        alert('更新に失敗しました。エラーを確認してください。');
+    });
+}
+</script>
 </body>
 </html>

@@ -1,12 +1,14 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Memo</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+{% extends 'pan_base.html' %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'tripapp:mypage' %}">マイページ</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">Trip Details -旅行詳細-</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'tripapp:memos' trip_id=trip_id %}">Information -必要な情報-</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Add Information -情報の追加-</li>
+        </ol>
+    </nav>
     <h1>Add Information</h1>
     <form method="post">
         {% csrf_token %}
@@ -14,7 +16,6 @@
         <div>
             <button type="submit" class="btn-circle-border-double">Save</button>
             <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:memos' trip_id=trip_id %}'">Back</button>
-        <div>
+        </div>
     </form>
-</body>
-</html>
+{% endblock %}

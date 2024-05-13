@@ -69,15 +69,25 @@ def user_logout(request):
 @login_required
 
 def mypage(request):
-    trips = Trip.objects.all()
-    return render(request, 'tripapp/mypage.html', {'trips': trips})
+    breadcrumbs = [
+        {'name': 'マイページ', 'url': reverse('tripapp:mypage')}
+    ]
+    trips = Trip.objects.filter(user=request.user)
+    return render(request, 'tripapp/mypage.html', {'trips': trips, 'breadcrumbs': breadcrumbs})
 
+@login_required
 def newtrip(request):
     if request.method == "POST":
-        form=TripForm(request.POST)
+        print("POST data:", request.POST)  # POSTデータを出力
+        form = TripForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_trip = form.save(commit=False)
+            new_trip.user = request.user
+            new_trip.save()
             return redirect('tripapp:mypage')
+        else:
+            print("Form errors:", form.errors)  # フォームのエラーを出力
+            return render(request, 'tripapp/newtrip.html', {'form': form})
     else:
         form = TripForm()
     return render(request, 'tripapp/newtrip.html', {'form': form})
@@ -87,7 +97,15 @@ def new_page(request):
 
 def tripdetails(request, trip_id):
     trip = get_object_or_404(Trip, pk=trip_id)
-    context = {'trip_id': trip_id}
+    breadcrumbs = [
+        {'name': 'マイページ', 'url': reverse('tripapp:mypage')},
+        {'name': trip.destination, 'url': reverse('tripapp:tripdetails', kwargs={'trip_id': trip_id})}
+    ]
+    context = {
+        'trip': trip,
+        'trip_id': trip_id,
+        'breadcrumbs': breadcrumbs
+    }
     return render(request, 'tripapp/tripdetails.html', context)
 
 @require_POST
@@ -114,20 +132,21 @@ def delete_trip(request, trip_id):
 
 @login_required
 def locations_view(request, trip_id):
+    trip = get_object_or_404(Trip, pk=trip_id)
+    
     if request.method == "POST":
         names = request.POST.getlist('name[]')
         addresses = request.POST.getlist('address[]')
-
         print(names, addresses)
 
         # 名称と住所のペアをデータベースに保存
         for name, address in zip(names, addresses):
             if name and address:  # 空の値を無視
-                Location.objects.create(name=name, address=address)
+                Location.objects.create(name=name, address=address, trip=trip)
 
         return redirect('tripapp:locations', trip_id=trip_id)
 
-    locations = Location.objects.all()
+    locations = Location.objects.filter(trip=trip)  # 修正：旅行に紐づく位置情報のみを取得
     return render(request, 'tripapp/locations.html', {'locations': locations, 'trip_id': trip_id})
 
 def delete_location(request, location_id, trip_id):
@@ -135,25 +154,32 @@ def delete_location(request, location_id, trip_id):
     location.delete()
     return redirect('tripapp:locations', trip_id=trip_id)  # ここは前回の修正案に基づいています
     
-def picturesupload(request, trip_id):
+def pictures(request, trip_id):
+    trip = get_object_or_404(Trip, pk=trip_id)
+    
     if request.method == 'POST':
+        # フォームデータとファイルを処理
         form = PictureForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()  # 写真を保存する
+            picture = form.save(commit=False)
+            picture.trip = trip
+            picture.save()  # 写真を保存する
             return redirect('tripapp:pictures', trip_id=trip_id)
+        else:
+            # フォームのバリデーションエラーを扱う
+            pictures = Picture.objects.filter(trip=trip)
+            return render(request, 'tripapp/pictures.html', {'form': form, 'pictures': pictures, 'trip_id': trip_id})
     else:
         form = PictureForm()
-    return render(request, 'tripapp/picturesupload.html', {'form': form, 'trip_id': trip_id})
-
-def pictures(request, trip_id):
-    pictures = Picture.objects.all()
-    return render(request, 'tripapp/pictures.html', {'pictures': pictures, 'trip_id': trip_id})
+    
+    pictures = Picture.objects.filter(trip=trip)  # 修正：旅行に紐づく写真のみを取得
+    return render(request, 'tripapp/pictures.html', {'form': form, 'pictures': pictures, 'trip_id': trip_id})
 
 @require_POST
 def bulk_delete_pictures(request, trip_id):
     picture_ids = request.POST.getlist('picture_ids')
     Picture.objects.filter(id__in=picture_ids).delete()
-    return redirect('tripapp:pictures',  trip_id=trip_id)  # 適宜、リダイレクト先を変更してください
+    return redirect('tripapp:pictures', trip_id=trip_id)
 
 #def items(request):
     #return render(request, 'tripapp/items.html')
@@ -179,27 +205,54 @@ def toggle_item_checked(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     item.checked = not item.checked  # 状態を反転
     item.save()
-    return redirect('tripapp:items_view')
+    return redirect('tripapp:items', trip_id=item.trip_id)
 
 def memos(request, trip_id):
-    memos = Memo.objects.all()
-    return render(request, 'tripapp/memos.html', {'memos': memos, 'trip_id': trip_id})
+    trip = get_object_or_404(Trip, pk=trip_id)
+    memos = Memo.objects.filter(trip=trip)  # trip_idをtripに修正
+    
+    context = {
+        'memos': memos,
+        'trip_id': trip_id,
+    }
+    return render(request, 'tripapp/memos.html', context)
 
 def addmemos(request, trip_id):
-    # trip = get_object_or_404(Trip, trip_id)
+    trip = get_object_or_404(Trip, pk=trip_id)  # 旅行データを取得
     if request.method == "POST":
-        form = MemoForm(request.POST)
+        form = MemoForm(request.POST, trip=trip)  # trip オブジェクトをフォームに渡す
         if form.is_valid():
             form.save()
             return redirect('tripapp:memos', trip_id=trip_id)
     else:
-        form = MemoForm()
-    return render(request, 'tripapp/addmemos.html', {'form': form,'trip_id': trip_id})
+        form = MemoForm(trip=trip)  # GET リクエスト時にも trip オブジェクトをフォームに渡す
+    return render(request, 'tripapp/addmemos.html', {'form': form, 'trip_id': trip_id})
 
 def delete_memo(request, memo_id, trip_id):
     memo = get_object_or_404(Memo, id=memo_id)
     memo.delete()
     return redirect('tripapp:memos', trip_id=trip_id)  # memos のリストページにリダイレクトします
 
+@require_POST
+def update_memo(request, trip_id):
+    memo_id = request.POST.get('id')
+    new_detail = request.POST.get('detail')
+    
+    try:
+        memo = Memo.objects.get(id=memo_id)
+        memo.detail = new_detail
+        memo.save()
+        return JsonResponse({'status': 'success'})
+    except Memo.DoesNotExist:
+        return JsonResponse({'status': 'failed', 'error': 'Memo does not exist'})
+    
 def portfolio(request):
     return render(request, 'tripapp/portfolio.html')
+
+def some_view(request):
+    breadcrumbs = [
+        {'name': 'MyPage', 'url': reverse('mypage')},
+        {'name': 'カテゴリー名', 'url': reverse('category_view')},
+        {'name': '子カテゴリー名', 'url': reverse('subcategory_view')}
+    ]
+    return render(request, 'tripapp/some_template.html', {'breadcrumbs': breadcrumbs})

@@ -1,0 +1,14 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <title>My Trip Records</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% include 'tripapp/pan.html' %}
+    <!-- ここからページの主要コンテンツが始まります -->
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
