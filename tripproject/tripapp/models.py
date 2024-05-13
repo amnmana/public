@@ -57,7 +57,7 @@ class Trip(models.Model):
 class Location(models.Model):
     name = models.CharField(max_length=128, verbose_name="名称")
     address = models.TextField(verbose_name="住所")
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)  # この行を追加
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)  # この行を追加
 
     def __str__(self):
         return self.name
@@ -67,7 +67,7 @@ class TestModel(models.Model):
 
 class Picture(models.Model):
     image = models.ImageField(upload_to='images/')
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)  # この行を追加
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)  # この行を追加
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
@@ -78,7 +78,7 @@ class Item(models.Model):
         return self.name    
 
 class Memo(models.Model):
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)  # この行を確認
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)  # この行を確認
     category = models.CharField(max_length=128)
     detail = models.TextField()
 
