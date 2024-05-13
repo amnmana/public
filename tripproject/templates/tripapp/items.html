@@ -1,58 +1,66 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>Items</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <script>
-        function addItem() {
-            var form = document.getElementById("itemsForm"); // フォームを取得
-            var addNewItemButton = document.getElementById("addNewItem"); // 新規登録ボタンを取得
-            var newField = document.createElement("div"); // 新しいフィールドを作成
-            newField.innerHTML = '<input type="text" name="name"> <button onclick="deleteItem(this.parentNode)">削除</button>';
-            // 新規登録ボタンの親要素を取得し、新規登録ボタンの直前に新しいフィールドを挿入
-        addNewItemButton.parentNode.insertBefore(newField, addNewItemButton);
-        }
+{% extends 'pan_base.html' %}
 
-        function deleteItem(element) {
-            element.remove(); // 要素を削除
-        }
-    </script>
-</head>
-<body>
-    <h1>What to bring</h1>
-    <form id="itemsForm" method="POST" action="{% url 'tripapp:items' trip_id=trip_id %}">
-        {% csrf_token %}
-        <div>
-            <input type="text" name="name"> <button type="button" class="btn-flat-border" onclick="deleteItem(this.parentNode)">Delete</button>
-        </div>
-        <div>
-            <button type="button" class="btn-flat-border" id="addNewItem" onclick="addItem()">新規登録</button>
-        </div>
-        <div>
-            <button type="submit" class="btn-circle-border-double">Save</button>
-        </div>
-    </form>
-        <div>
-            <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
-        </div> 
-    <ul>
-            {% for item in items %}
-                <li>
-                    <form method="POST" action="{% url 'tripapp:toggle_item_checked' item.id %}">
-                        {% csrf_token %}
-                        <input type="checkbox" name="checked" onchange="this.form.submit()" {% if item.checked %}checked{% endif %}>
-                        {{ item.name }}
-                    </form>
-                    <!-- 削除ボタンを追加 -->
-                    <form method="POST" action="{% url 'tripapp:delete_item' item_id=item.id trip_id=trip_id %}" style="display: inline;">
-                        {% csrf_token %}
-                        <!-- CSRFトークンを含める -->
-                        <button type="submit" class="btn-flat-border">Delete</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-</body>
-</html>
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'tripapp:mypage' %}">マイページ</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">Trip Details -旅行詳細-</a></li>
+        <li class="breadcrumb-item active" aria-current="page">What to bring -持っていくもの-</li>
+    </ol>
+</nav>
+<h1>What to bring</h1>
+
+    <!-- アイテムリストのセクションをフォームよりも上に移動 -->
+<ul>
+    {% for item in items %}
+        <li>
+            <form method="POST" action="{% url 'tripapp:toggle_item_checked' item.id %}">
+                {% csrf_token %}
+            <input type="checkbox" name="checked" onchange="this.form.submit()" {% if item.checked %}checked{% endif %}>
+                {{ item.name }}
+            </form>
+            <!-- 削除ボタンを追加 -->
+            <form method="POST" action="{% url 'tripapp:delete_item' item_id=item.id trip_id=trip_id %}" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn-flat-border">Delete</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+
+    <!-- アイテム追加フォーム -->
+<form id="itemsForm" method="POST" action="{% url 'tripapp:items' trip_id=trip_id %}">
+    {% csrf_token %}
+    <div>
+        <!-- ここに既存のアイテムフィールドと削除ボタンを追加 -->
+        <input type="text" name="name"> <button type="button" class="btn-flat-border" onclick="deleteItem(this.parentNode)">Delete</button>
+    </div>
+    <div>
+        <!-- 新規登録ボタンをここに追加 -->
+        <button type="button" class="btn-flat-border" id="addNewItem" onclick="addItem()">新規追加</button>
+    </div>
+    <div>
+        <!-- 保存ボタンをここに追加 -->
+        <button type="submit" class="btn-circle-border-double">Save</button>
+    </div>
+</form>
+
+<!-- Backボタン -->
+<div>
+    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
+</div> 
+
+<script>
+function addItem() {
+    var form = document.getElementById('itemsForm');
+    var newInput = document.createElement('div');
+    newInput.innerHTML = '<input type="text" name="name"> <button type="button" class="btn-flat-border" onclick="deleteItem(this.parentNode)">Delete</button>';
+    form.insertBefore(newInput, form.children[form.children.length - 3]);
+}
+
+function deleteItem(item) {
+    // 入力フィールドを削除します
+    item.parentNode.removeChild(item);
+}
+</script>
+{% endblock %}

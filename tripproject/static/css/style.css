@@ -43,10 +43,10 @@ a {
     margin-bottom: 20px;
 }
       
-.btn-circle-border-double:hover {
+/* .btn-circle-border-double:hover {
     -webkit-transform: rotateY(360deg);
-    transform: rotateY(360deg); 
-}
+    transform: rotateY(360deg);
+} */
 
 /* SaveボタンとBackボタンのスタイルをクラスに適用する場合 */
 .btn-circle-border-double {
@@ -97,3 +97,37 @@ ul {
 .delete-link {
     font-size: 15px; /* またはお好みのサイズに */
 }
+
+#tripList li .btn-flat-border {
+    margin-left: 15px; /* または希望するスペースに応じた値 */
+}
+
+.breadcrumb, ol.breadcrumb {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+  
+.breadcrumb li, ol.breadcrumb li {
+    display: inline; /* 横に並ぶように */
+    font-weight: bold; /* 太字 */
+}
+  
+.breadcrumb li:after, ol.breadcrumb li:after { /* > を表示 */
+    content: '>';
+    padding: 0 0.2em;
+    color: #555;
+}
+  
+.breadcrumb li:last-child:after, ol.breadcrumb li:last-child:after {
+    content: '';
+}
+  
+.breadcrumb li a, ol.breadcrumb li a {
+    text-decoration: none;
+    color: #52b5ee; /* 色 */
+}
+
+.breadcrumb li a:hover, ol.breadcrumb li a:hover {
+    text-decoration: underline;
+}  

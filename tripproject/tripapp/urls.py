@@ -20,7 +20,6 @@ urlpatterns = [
     path('pictures/<int:trip_id>/', views.pictures, name='pictures'),
     path('locations/<int:trip_id>/', views.locations_view, name='locations'),
     path('locations/delete/<int:location_id>/<int:trip_id>/', views.delete_location, name='delete_location'),
-    path('picturesupload/<int:trip_id>/', views.picturesupload, name='picturesupload'),
     path('bulk_delete_pictures/<int:trip_id>/',views.bulk_delete_pictures, name='bulk_delete_pictures'),
     # path('items/<int:trip_id>/', views.items_view, name='items_view'),
     path('items/<int:trip_id>/', views.items_view, name='items'),
@@ -28,6 +27,7 @@ urlpatterns = [
     path('items/toggle/<int:item_id>/', toggle_item_checked, name='toggle_item_checked'),
     path('memos/<int:trip_id>/', views.memos, name='memos'),
     path('addmemos/<int:trip_id>/', views.addmemos, name='addmemos'),
+    path('update_memo/<int:trip_id>/', views.update_memo, name='update_memo'),
     path('delete_memo/<int:memo_id>/<int:trip_id>/', views.delete_memo, name='delete_memo'),
 ]
 

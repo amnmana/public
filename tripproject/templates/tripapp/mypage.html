@@ -1,12 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>My Trip Records</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+{% extends 'pan_base.html' %}
+
+{% block content %}
     <h1>My Trip Records</h1>
     <a class="btn-circle-border-double" href="{% url 'tripapp:user_logout' %}">Logout</a>
     <a class="btn-circle-border-double" href="{% url 'tripapp:newtrip' %}">New trip</a>
@@ -24,5 +18,4 @@
         </li>
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

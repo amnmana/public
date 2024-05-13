@@ -45,9 +45,19 @@ class User(AbstractBaseUser,PermissionsMixin):
     def __str__(self):
         return self.email
 
+class Trip(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # ユーザーとの関連付け
+    destination = models.CharField(max_length=100)
+    startDate = models.DateField()  # DateTimeField から DateField に変更する場合
+    endDate = models.DateField()
+
+    def __str__(self):
+        return f"{self.destination} from {self.startDate} to {self.endDate}"
+
 class Location(models.Model):
     name = models.CharField(max_length=128, verbose_name="名称")
     address = models.TextField(verbose_name="住所")
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)  # この行を追加
 
     def __str__(self):
         return self.name
@@ -57,6 +67,7 @@ class TestModel(models.Model):
 
 class Picture(models.Model):
     image = models.ImageField(upload_to='images/')
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)  # この行を追加
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
@@ -67,13 +78,9 @@ class Item(models.Model):
         return self.name
 
 class Memo(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)  # この行を確認
     category = models.CharField(max_length=128)
     detail = models.TextField()
 
     def __str__(self):
         return self.category
-
-class Trip(models.Model):
-    destination = models.CharField(max_length=100)
-    startDate = models.DateField()  # DateTimeField から DateField に変更する場合
-    endDate = models.DateField()

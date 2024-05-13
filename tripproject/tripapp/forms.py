@@ -104,6 +104,12 @@ class SingleUploadModelForm(forms.ModelForm):
         model = TestModel
         fields = '__all__'
 
+class TripForm(forms.ModelForm):
+    class Meta:
+        model = Trip
+        fields = '__all__'  # または、フォームに含めたいフィールドをリスト形式で指定
+        exclude = ('user',)  # userフィールドを除外
+
 class PictureForm(forms.ModelForm):
     class Meta:
         model = Picture
@@ -118,8 +124,14 @@ class MemoForm(forms.ModelForm):
     class Meta:
         model = Memo
         fields = ['category', 'detail']
+    
+    def __init__(self, *args, **kwargs):
+        self.trip = kwargs.pop('trip', None)
+        super(MemoForm, self).__init__(*args, **kwargs)
 
-class TripForm(forms.ModelForm):
-    class Meta:
-        model = Trip
-        fields = '__all__'  # または、フォームに含めたいフィールドをリスト形式で指定
+    def save(self, commit=True):
+        memo = super(MemoForm, self).save(commit=False)
+        memo.trip = self.trip
+        if commit:
+            memo.save()
+        return memo

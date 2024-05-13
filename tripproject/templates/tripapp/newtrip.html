@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>New Trip</h1>
-    <form id="tripForm" method="post">
+    <form id="tripForm" method="post" action="{% url 'tripapp:newtrip' %}"> <!-- actionを追加 -->
         {% csrf_token %}
         <label for="destination">Destination</label>
         <input type="text" id="destination" name="destination" required><br><br>
@@ -17,7 +17,18 @@
         <label for="endDate">End Date:</label>
         <input type="date" id="endDate" name="endDate" required><br><br>
         <button type="submit" class="btn-circle-border-double">Save</button>
-        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:mypage' %}'">Back</button>
+        <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:mypage' %}'">Back</button>
     </form>
+    <!-- エラー表示のためのセクション -->
+    {% if form.errors %}
+        <div>
+            Please correct the following errors:
+            {% for field in form %}
+                {% if field.errors %}
+                    {{ field.errors }}
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 </body>
 </html>

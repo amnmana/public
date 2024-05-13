@@ -1,36 +1,66 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>pictures</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <h1>Pictures</h1>
-    <div>
-        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:picturesupload' trip_id=trip_id %}'">Edit</button>
-        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
-    </div>
+{% extends 'pan_base.html' %}
 
-    <!-- 写真の表示 -->
-    <form action="{% url 'tripapp:bulk_delete_pictures' trip_id=trip_id %}" method="post">
-        {% csrf_token %}
-        {% for picture in pictures %}
-        <div>
-            <input type="checkbox" name="picture_ids" value="{{ picture.id }}">
-            <img src="{{ picture.image.url }}" alt="Picture" style="width: 300px; height: auto;">
-        </div>
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'tripapp:mypage' %}">マイページ</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">Trip Details -旅行詳細-</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pictures -写真-</li>
+    </ol>
+</nav>
+
+<h1>Pictures</h1>
+
+<!-- エラーメッセージを表示 -->
+{% if form.errors %}
+<ul>
+    {% for field in form %}
+        {% for error in field.errors %}
+            <li>{{ error }}</li>
         {% endfor %}
-        <button type="submit" class="btn-flat-border">Delete Selected</button>
-    </form>
-    <script>
-    function submitDelete() {
-        if (confirm('Are you sure you want to delete the selected pictures?')) {
-            document.getElementById('deletePicturesForm').submit();
+    {% endfor %}
+</ul>
+{% endif %}
+
+<!-- アップロードした写真の表示 -->
+{% if uploaded_picture %}
+<h2>Uploaded Picture:</h2>
+<img src="{{ uploaded_picture.url }}" alt="Uploaded Picture">
+{% endif %}
+
+<!-- 写真のアップロードフォーム -->
+<form id="upload-form" action="{% url 'tripapp:pictures' trip_id=trip_id %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" multiple accept="image/*" id="multiple-files" name="image">
+    <button type="submit" class="btn-circle-border-double">Upload</button>
+</form>
+
+<!-- 写真の表示 -->
+<form action="{% url 'tripapp:bulk_delete_pictures' trip_id=trip_id %}" method="post">
+    {% csrf_token %}
+    {% for picture in pictures %}
+    <div>
+        <input type="checkbox" name="picture_ids" value="{{ picture.id }}">
+        <img src="{{ picture.image.url }}" alt="Picture" style="width: 300px; height: auto;">
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn-flat-border">Delete Selected</button>
+</form>
+
+<div>
+    <!-- 戻るボタン -->
+    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
+</div>
+
+<!-- JavaScript -->
+<script type='text/javascript'>
+    function validateForm() {
+        var files = document.getElementById('multiple-files').files;
+        if (files.length === 0) {
+            alert("写真を選択してください。");
+            return false;
         }
+        return true;
     }
-    </script>
-</body>
-</html>
+</script>
+{% endblock %}
