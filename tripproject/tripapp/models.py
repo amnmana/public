@@ -30,13 +30,8 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
-<<<<<<< HEAD
 
 class User(AbstractBaseUser,PermissionsMixin):
-=======
-        
-class User(AbstractBaseUser, PermissionsMixin):
->>>>>>> ca47d1a4b41c88a05d1c3b2d9d1cd94fcd80301e
     username = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)  # デフォルトをTrueに変更
