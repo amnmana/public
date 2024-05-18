@@ -41,15 +41,11 @@
                 <!-- 新規登録ボタンをここに追加 -->
                 <button type="button" class="btn-flat-border" id="addNewItem" onclick="addItem()">新規追加</button>
             </div>
+            <div class="button-group">
+                <button type="submit" class="btn-circle-border-double">登録</button>
+                <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
+            </div>
         </form>
-    </div>
-
-    <!-- フッターのボタンを下寄せにするためのコンテナ -->
-    <div class="footer">
-        <div class="button-group">
-            <button type="submit" class="btn-circle-border-double">登録</button>
-            <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
-        </div>
     </div>
 </div>
 
