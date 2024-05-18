@@ -1,21 +1,22 @@
 {% extends 'pan_base.html' %}
 
 {% block content %}
-    <h1>My Trip Records</h1>
-    <a class="btn-circle-border-double" href="{% url 'tripapp:user_logout' %}">Logout</a>
-    <a class="btn-circle-border-double" href="{% url 'tripapp:newtrip' %}">New trip</a>
+    {% with no_breadcrumbs=True %}
+        <h1>My Trip Records</h1>
+        <a class="btn-circle-border-double" href="{% url 'tripapp:newtrip' %}">新規旅行</a>
 
-    <!-- 旅行情報を表示するための要素 -->
-    <ul id="tripList">
-        {% for trip in trips %}
-        <li>
-            <a href="{% url 'tripapp:tripdetails' trip.id %}">{{ trip.destination }}</a>
-            <!-- 削除ボタン -->
-            <form action="{% url 'tripapp:delete_trip' trip.id %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn-flat-border">Delete</button>
-            </form>
-        </li>
-        {% endfor %}
-    </ul>
+        <!-- 旅行情報を表示するための要素 -->
+        <ul id="tripList">
+            {% for trip in trips %}
+            <li>
+                <a href="{% url 'tripapp:tripdetails' trip.id %}">{{ trip.destination }}</a>
+                <!-- 削除ボタン -->
+                <form action="{% url 'tripapp:delete_trip' trip.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-flat-border">削除</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    {% endwith %}
 {% endblock %}

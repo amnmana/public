@@ -1,34 +1,30 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>New Trip</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <h1>New Trip</h1>
-    <form id="tripForm" method="post" action="{% url 'tripapp:newtrip' %}"> <!-- actionを追加 -->
-        {% csrf_token %}
-        <label for="destination">Destination</label>
-        <input type="text" id="destination" name="destination" required><br><br>
-        <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" name="startDate" required><br><br>
-        <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" name="endDate" required><br><br>
-        <button type="submit" class="btn-circle-border-double">Save</button>
-        <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:mypage' %}'">Back</button>
-    </form>
-    <!-- エラー表示のためのセクション -->
-    {% if form.errors %}
-        <div>
-            Please correct the following errors:
-            {% for field in form %}
-                {% if field.errors %}
-                    {{ field.errors }}
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>旅行先登録</h1>
+    <div class="form-container">
+        <form id="tripForm" method="post" action="{% url 'tripapp:newtrip' %}">
+            {% csrf_token %}
+            <label for="destination">行先</label>
+            <input type="text" id="destination" name="destination" required><br><br>
+            <label for="startDate">出発日</label>
+            <input type="date" id="startDate" name="startDate" required><br><br>
+            <label for="endDate">終了日</label>
+            <input type="date" id="endDate" name="endDate" required><br><br>
+            <div class="footer button-group">
+                <button type="submit" class="btn-circle-border-double">登録</button>
+                <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:mypage' %}'">戻る</button>
+            </div>
+        </form>
+        {% if form.errors %}
+            <div>
+                Please correct the following errors:
+                {% for field in form %}
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

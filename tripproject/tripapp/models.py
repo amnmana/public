@@ -2,11 +2,8 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
-from django.contrib.auth.models import UserManager
-from django.contrib.auth.models import User
 
 class UserManager(BaseUserManager):
-
     def create_user(self, username, email, password=None, **extra_fields):
         if not email:
             raise ValueError('Enter Email!')
@@ -57,7 +54,7 @@ class Trip(models.Model):
 class Location(models.Model):
     name = models.CharField(max_length=128, verbose_name="名称")
     address = models.TextField(verbose_name="住所")
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)  # この行を追加
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
@@ -67,18 +64,18 @@ class TestModel(models.Model):
 
 class Picture(models.Model):
     image = models.ImageField(upload_to='images/')
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)  # この行を追加
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
     checked = models.BooleanField(default=False)
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)  # NULLを許容する
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name    
 
 class Memo(models.Model):
-    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)  # この行を確認
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)
     category = models.CharField(max_length=128)
     detail = models.TextField()
 

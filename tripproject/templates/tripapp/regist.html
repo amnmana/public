@@ -3,7 +3,9 @@
 <form method="POST">
     {% csrf_token %}
     {{ regist_form.as_p}}
-    <button type="submit"class="btn-circle-border-double">Registration</button>
-    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:home' %}'">Back</button>
+    <button type="submit"class="btn-circle-border-double">新規登録</button>
+    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:home' %}'">戻る</button>
 </form>
 {% endblock %}
+
+{% block show_header %}{% endblock %}

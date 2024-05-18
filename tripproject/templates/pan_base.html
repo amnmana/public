@@ -1,14 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <title>My Trip Records</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- パンくずリストを含める -->
     {% include 'tripapp/pan.html' %}
     <!-- ここからページの主要コンテンツが始まります -->
-    {% block content %}
+    {% block page_content %}
     {% endblock %}
-</body>
-</html>
+{% endblock %}
