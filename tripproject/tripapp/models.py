@@ -15,11 +15,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-<<<<<<< Updated upstream
 
-=======
-    
->>>>>>> Stashed changes
     def create_superuser(self, username, email, password=None):
         user = self.model(
             username=username,
@@ -31,11 +27,7 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
-<<<<<<< Updated upstream
 
-=======
-        
->>>>>>> Stashed changes
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
@@ -66,11 +58,7 @@ class Location(models.Model):
 
     def __str__(self):
         return self.name
-<<<<<<< Updated upstream
 
-=======
-    
->>>>>>> Stashed changes
 class TestModel(models.Model):
     pass
 
@@ -84,11 +72,8 @@ class Item(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-<<<<<<< Updated upstream
         return self.name
-=======
-        return self.name    
->>>>>>> Stashed changes
+
 
 class Memo(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)
