@@ -4,12 +4,12 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'tripapp:mypage' %}">マイページ</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">Trip Details -旅行詳細-</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Pictures -写真-</li>
+        <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">旅行詳細</a></li>
+        <li class="breadcrumb-item active" aria-current="page">写真</li>
     </ol>
 </nav>
 
-<h1>Pictures</h1>
+<h1>写真</h1>
 
 <!-- エラーメッセージを表示 -->
 {% if form.errors %}
@@ -32,7 +32,7 @@
 <form id="upload-form" action="{% url 'tripapp:pictures' trip_id=trip_id %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <input type="file" multiple accept="image/*" id="multiple-files" name="image">
-    <button type="submit" class="btn-circle-border-double">Upload</button>
+    <button type="submit" class="btn-flat-border">アップロード</button>
 </form>
 
 <!-- 写真の表示 -->
@@ -44,12 +44,12 @@
         <img src="{{ picture.image.url }}" alt="Picture" style="width: 300px; height: auto;">
     </div>
     {% endfor %}
-    <button type="submit" class="btn-flat-border">Delete Selected</button>
+    <button type="submit" class="btn-flat-border">選択して削除</button>
 </form>
 
-<div>
-    <!-- 戻るボタン -->
-    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
+<!-- 戻るボタン -->
+<div class="footer">
+    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
 </div>
 
 <!-- JavaScript -->

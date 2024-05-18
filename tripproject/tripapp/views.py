@@ -63,7 +63,6 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    messages.success(request, 'Logout completed.')
     return redirect('tripapp:home')
 
 @login_required

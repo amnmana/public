@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <title>My Trip Records</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-</head>
-<body>
+{% extends 'pan_base.html' %}
+
+{% block content %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'tripapp:mypage' %}">マイページ</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">Trip Details -旅行詳細-</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Information -必要な情報-</li>
+        <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">旅行詳細</a></li>
+        <li class="breadcrumb-item active" aria-current="page">必要な情報</li>
     </ol>
 </nav>
 
-<h1>Information</h1>
+<h1>必要な情報</h1>
 <div>
     {% for memo in memos %}
     <div id="memo{{ memo.id }}" class="memo-container">
@@ -22,19 +18,21 @@
         <!-- 削除ボタン -->
         <form action="{% url 'tripapp:delete_memo' memo_id=memo.id trip_id=trip_id %}" method="post">
             {% csrf_token %}
-            <button type="submit" class="btn-flat-border">Delete</button>
+            <button type="submit" class="btn-flat-border">削除</button>
         </form>
         <!-- 編集フォーム（デフォルトでは非表示） -->
         <div style="display:none;" id="editForm{{ memo.id }}">
             <input type="text" id="editDetail{{ memo.id }}" value="{{ memo.detail }}">
-            <button onclick="saveChanges({{ memo.id }})" class="btn-flat-border">Save</button>
+            <button onclick="saveChanges({{ memo.id }})" class="btn-flat-border">保存</button>
         </div>
         <!-- 編集ボタン -->
-        <button onclick="editMemo({{ memo.id }})" class="btn-flat-border">Edit</button>
+        <button onclick="editMemo({{ memo.id }})" class="btn-flat-border">編集</button>
     </div>
     {% endfor %}
-    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:addmemos' trip_id=trip_id %}'">New</button>
-    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
+    <div class="footer button-group">
+        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:addmemos' trip_id=trip_id %}'">新情報追加</button>
+        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
+    </div>
 </div>
 <script>
 function editMemo(memoId) {
@@ -78,5 +76,4 @@ function saveChanges(memoId) {
     });
 }
 </script>
-</body>
-</html>
+{% endblock %}

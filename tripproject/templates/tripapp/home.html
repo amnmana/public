@@ -1,9 +1,8 @@
-{% extends "base.html" %}
-{% block content %}
-{% if messages %}
-    {% for message in messages %}
-        <div>{{ message.message }}</div>
-    {% endfor %}
-{% endif %}
-    <h1>Hello</h1>
+<!-- home.html -->
+{% extends 'pan_base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block page_content %}
+<h1>Hello</h1>
 {% endblock %}

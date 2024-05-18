@@ -1,12 +1,18 @@
 {% extends 'pan_base.html' %}
 
-{% block content %}
-    <h1>Trip Details - {{ trip.destination }}</h1>
-    <ul>
-        <li><a href="{% url 'tripapp:items' trip_id=trip.id %}">What to bring</a></li>
-        <li><a href="{% url 'tripapp:memos' trip_id=trip.id %}">Information</a></li>
-        <li><a href="{% url 'tripapp:locations' trip_id=trip.id %}">Wanna go place</a></li>
-        <li><a href="{% url 'tripapp:pictures' trip_id=trip.id %}">Pictures</a></li>
-    </ul>
-    <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:mypage' %}'">Back</button>
+{% block page_content %}
+<div class="container">
+    <div class="content">
+        <h1>旅行詳細 - {{ trip.destination }}</h1>
+        <ul class="details-list">
+            <li><a href="{% url 'tripapp:items' trip_id=trip.id %}">持ち物</a></li>
+            <li><a href="{% url 'tripapp:memos' trip_id=trip.id %}">必要な情報</a></li>
+            <li><a href="{% url 'tripapp:locations' trip_id=trip.id %}">行きたいところ</a></li>
+            <li><a href="{% url 'tripapp:pictures' trip_id=trip.id %}">写真</a></li>
+        </ul>
+    </div>
+    <div class="footer">
+        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:mypage' %}'">戻る</button>
+    </div>
+</div>
 {% endblock %}

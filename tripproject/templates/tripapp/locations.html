@@ -1,67 +1,74 @@
 {% extends 'pan_base.html' %}
 
 {% block content %}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const addButton = document.getElementById('add-location-button');
-    const form = document.getElementById('locations-form');
+<div class="container">
+    <div class="content">
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addButton = document.getElementById('add-location-button');
+            const form = document.getElementById('locations-form');
 
-    addButton.addEventListener('click', function() {
-        const newInput = document.createElement('div');
-        newInput.innerHTML = `
-            <p>
-                <label for="name">Name:</label>
-                <input type="text" name="name[]" required>
-            </p>
-            <p>
-                <label for="address">Address:</label>
-                <textarea name="address[]" required></textarea>
-            </p>
-            <button type="button" class="btn-flat-border" onclick="removeField(this)">Delete</button>`;
-        const dynamicField = document.getElementById('dynamic-field');
-        dynamicField.appendChild(newInput);
-    });
-});
+            addButton.addEventListener('click', function() {
+                const newInput = document.createElement('div');
+                newInput.innerHTML = `
+                    <p>
+                        <label for="name">Name:</label>
+                        <input type="text" name="name[]" required>
+                    </p>
+                    <p>
+                        <label for="address">Address:</label>
+                        <textarea name="address[]" required></textarea>
+                    </p>
+                    <button type="button" class="btn-flat-border" onclick="removeField(this)">Delete</button>`;
+                const dynamicField = document.getElementById('dynamic-field');
+                dynamicField.appendChild(newInput);
+            });
+        });
 
-function removeField(button) {
-    // ボタンが属するdiv要素を削除
-    button.parentNode.remove();
-}
-</script>
+        function removeField(button) {
+            // ボタンが属するdiv要素を削除
+            button.parentNode.remove();
+        }
+        </script>
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'tripapp:mypage' %}">マイページ</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">Trip Details -旅行詳細-</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Wanna go place -行きたいところ-</li>
-    </ol>
-</nav>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'tripapp:mypage' %}">マイページ</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'tripapp:tripdetails' trip_id=trip_id %}">旅行詳細</a></li>
+                <li class="breadcrumb-item active" aria-current="page">行きたいところ</li>
+            </ol>
+        </nav>
 
-<h1>Wanna go place</h1>
-<ul>
-    {% for location in locations %}
-    <li>{{ location.name }}: {{ location.address }} <a href="{% url 'tripapp:delete_location' location_id=location.id trip_id=trip_id %}" class="delete-link">Delete</a></li>
-    {% endfor %}
-</ul>
-<form method="post" id="locations-form">
-    {% csrf_token %}
-    <div id="dynamic-field">
-        <p>
-            <label for="name">Name:</label>
-            <input type="text" name="name[]" required>
-        </p>
-        <p>
-            <label for="address">Address:</label>
-            <textarea name="address[]" required></textarea>
-        </p>
+        <h1>行きたいところ</h1>
+        <ul style="list-style-type: none; padding: 0;">
+            {% for location in locations %}
+            <li>{{ location.name }}: {{ location.address }} <a href="{% url 'tripapp:delete_location' location_id=location.id trip_id=trip_id %}" class="delete-link">削除</a></li>
+            {% endfor %}
+        </ul>
+        <form method="post" id="locations-form">
+            {% csrf_token %}
+            <div id="dynamic-field">
+                <p>
+                    <label for="name">名称:</label>
+                    <input type="text" name="name[]" required>
+                </p>
+                <p>
+                    <label for="address">住所:</label>
+                    <textarea name="address[]" required></textarea>
+                </p>
+            </div>
+            <div>
+                <button type="button" class="btn-flat-border" id="add-location-button">新規追加</button>
+            </div>
+        </form>
     </div>
-    <div>
-        <button type="button" class="btn-flat-border" id="add-location-button">新規追加</button>
-    </div>
-    <div>
-        <button type="submit" class="btn-circle-border-double">Save</button>
-    </div>
-</form>
-<button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">Back</button>
 
+    <!-- フッターのボタンを下寄せにするためのコンテナ -->
+    <div class="footer">
+        <div class="button-group">
+            <button type="submit" class="btn-circle-border-double">登録</button>
+            <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
+        </div>
+    </div>
+</div>
 {% endblock %}
