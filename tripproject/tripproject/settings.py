@@ -17,6 +17,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Quick-start development settings - unsuitable for production
@@ -28,7 +29,7 @@ SECRET_KEY = 'django-insecure-_6asx=-0jqo7c$(lj16-72c26=!6t-gw(@cuvv-bby6ve_n@^$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['manaamano.pythonanywhere.com']
 
 
 # Application definition
@@ -145,36 +146,37 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'tripapp.User'
 
-LOGGING = {
-    'disable_existing_loggers': False,
-    'version': 1,
-    'handlers': {
-        'console': {
-            # logging handler that outputs log messages to terminal
-            'class': 'logging.StreamHandler',
-            'level': 'DEBUG', # message level to be written to console
-        },
-    },
-    'loggers': {
-        '': {
-            # this sets root level logger to log debug and higher level
-            # logs to console. All other loggers inherit settings from
-            # root level logger.
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False, # this tells logger to send logging message
-                                # to its parent (will send if set to True)
-        },
-        'django.db': {
-            # django also has database level logging
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-}
+# LOGGING = {
+#     'disable_existing_loggers': False,
+#     'version': 1,
+#     'handlers': {
+#         'console': {
+#             # logging handler that outputs log messages to terminal
+#             'class': 'logging.StreamHandler',
+#             'level': 'DEBUG', # message level to be written to console
+#         },
+#     },
+#     'loggers': {
+#         '': {
+#             # this sets root level logger to log debug and higher level
+#             # logs to console. All other loggers inherit settings from
+#             # root level logger.
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': False, # this tells logger to send logging message
+#                                 # to its parent (will send if set to True)
+#         },
+#         'django.db': {
+#             # django also has database level logging
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         },
+#     },
+# }
 
 LOGIN_REDIRECT_URL = '/tripapp/mypage/'  # ログイン後に遷移するURL
+LOGIN_URL = 'tripapp:user_login'  # ログインページのパスを指定
 
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True

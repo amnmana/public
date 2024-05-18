@@ -15,7 +15,7 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
-    
+
     def create_superuser(self, username, email, password=None):
         user = self.model(
             username=username,
@@ -27,7 +27,7 @@ class UserManager(BaseUserManager):
         user.is_superuser = True
         user.save(using=self._db)
         return user
-        
+
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
@@ -58,7 +58,7 @@ class Location(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 class TestModel(models.Model):
     pass
 
@@ -72,11 +72,11 @@ class Item(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.name    
+        return self.name
 
 class Memo(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)
-    category = models.CharField(max_length=128)
+    category = models.CharField(maxlength=128)
     detail = models.TextField()
 
     def __str__(self):
