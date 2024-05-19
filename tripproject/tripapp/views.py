@@ -51,15 +51,14 @@ def user_login(request):
                 login(request, user)
                 return redirect('tripapp:mypage')
             else:
-                messages.warning(request, 'User is not acctive.')
+                messages.warning(request, '認証できません')
         else:
-            messages.warning(request,'Wrong mailaddress or password.')
+            messages.warning(request, 'メールアドレスもしくはパスワードが一致しません')
     return render(
         request, 'tripapp/user_login.html', context={
             'login_form': login_form,
         }
     )
-
 
 def user_logout(request):
     logout(request)
@@ -208,29 +207,29 @@ def toggle_item_checked(request, item_id):
 
 def memos(request, trip_id):
     trip = get_object_or_404(Trip, pk=trip_id)
-    memos = Memo.objects.filter(trip=trip)  # trip_idをtripに修正
+    memos = Memo.objects.filter(trip=trip)
+    
+    if request.method == "POST":
+        form = MemoForm(request.POST)
+        if form.is_valid():
+            memo = form.save(commit=False)
+            memo.trip = trip
+            memo.save()
+            return redirect('tripapp:memos', trip_id=trip_id)
+    else:
+        form = MemoForm()
     
     context = {
         'memos': memos,
         'trip_id': trip_id,
+        'form': form
     }
     return render(request, 'tripapp/memos.html', context)
-
-def addmemos(request, trip_id):
-    trip = get_object_or_404(Trip, pk=trip_id)  # 旅行データを取得
-    if request.method == "POST":
-        form = MemoForm(request.POST, trip=trip)  # trip オブジェクトをフォームに渡す
-        if form.is_valid():
-            form.save()
-            return redirect('tripapp:memos', trip_id=trip_id)
-    else:
-        form = MemoForm(trip=trip)  # GET リクエスト時にも trip オブジェクトをフォームに渡す
-    return render(request, 'tripapp/addmemos.html', {'form': form, 'trip_id': trip_id})
 
 def delete_memo(request, memo_id, trip_id):
     memo = get_object_or_404(Memo, id=memo_id)
     memo.delete()
-    return redirect('tripapp:memos', trip_id=trip_id)  # memos のリストページにリダイレクトします
+    return redirect('tripapp:memos', trip_id=trip_id)
 
 @require_POST
 def update_memo(request, trip_id):

@@ -26,7 +26,6 @@ urlpatterns = [
     path('item/delete/<int:item_id>/<int:trip_id>/', views.delete_item, name='delete_item'),
     path('items/toggle/<int:item_id>/', toggle_item_checked, name='toggle_item_checked'),
     path('memos/<int:trip_id>/', views.memos, name='memos'),
-    path('addmemos/<int:trip_id>/', views.addmemos, name='addmemos'),
     path('update_memo/<int:trip_id>/', views.update_memo, name='update_memo'),
     path('delete_memo/<int:memo_id>/<int:trip_id>/', views.delete_memo, name='delete_memo'),
 ]

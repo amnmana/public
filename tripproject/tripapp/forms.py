@@ -16,7 +16,7 @@ from .models import Trip
 
 
 class UserCreationForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+    password = forms.CharField(label='password', widget=forms.PasswordInput)
     confirm_password = forms.CharField(label='Retype password', widget=forms.PasswordInput)
 
     class Meta:
@@ -28,7 +28,7 @@ class UserCreationForm(forms.ModelForm):
         password = cleaned_date.get('password')
         confirm_password = cleaned_date.get('confirm_password')
         if password != confirm_password:
-            raise ValidationError('Your password does not match.')
+            raise ValidationError('パスワードが一致しません')
         
     def save(self, commit=False):
         user = super().save(commit=False)
@@ -47,10 +47,10 @@ class UserChangeForm(forms.ModelForm):
         return self.initial['password']
     
 class RegistForm(forms.ModelForm):
-    username = forms.CharField(label='Name')
-    email = forms.EmailField(label='Mail Address')
-    password = forms.CharField(label='Password', widget=forms.PasswordInput())
-    confirm_password = forms.CharField(label='Retype password', widget=forms.PasswordInput())
+    username = forms.CharField(label='名前')
+    email = forms.EmailField(label='メールアドレス')
+    password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
+    confirm_password = forms.CharField(label='パスワード再入力', widget=forms.PasswordInput())
 
     class Meta():
         model = User
@@ -61,7 +61,7 @@ class RegistForm(forms.ModelForm):
         password = cleaned_data['password']
         confirm_password = cleaned_data['confirm_password']
         if password != confirm_password:
-            raise forms.ValidationError('Your password does not match.')
+            raise forms.ValidationError('パスワードが一致しません')
     
     def save(self, commit=False):
         user = super().save(commit=False)
@@ -71,8 +71,8 @@ class RegistForm(forms.ModelForm):
         return user
 
 class LoginForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    email = forms.EmailField(label='メールアドレス')
+    password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)  # requestをkwargsから取得し、インスタンス変数に保存
@@ -87,7 +87,7 @@ class LoginForm(forms.Form):
             # authenticateメソッドを呼び出す際にrequestオブジェクトを使用
             self.user_cache = authenticate(self.request, username=email, password=password)
             if self.user_cache is None or not self.user_cache.is_active:
-                raise ValidationError("Sorry, that login was invalid. Please try again.")
+                raise ValidationError("ログインが無効です。もう一度試してください")
 
         return cleaned_data
 
@@ -124,6 +124,10 @@ class MemoForm(forms.ModelForm):
     class Meta:
         model = Memo
         fields = ['category', 'detail']
+        labels = {
+            'category': 'カテゴリー',
+            'detail': '詳細',
+        }
     
     def __init__(self, *args, **kwargs):
         self.trip = kwargs.pop('trip', None)

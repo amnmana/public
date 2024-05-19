@@ -10,30 +10,60 @@
 </nav>
 
 <h1>必要な情報</h1>
-<div>
-    {% for memo in memos %}
-    <div id="memo{{ memo.id }}" class="memo-container">
-        <h2>{{ memo.category }}</h2>
-        <p id="detail{{ memo.id }}" style="white-space: pre-line;">{{ memo.detail }}</p>
-        <!-- 削除ボタン -->
-        <form action="{% url 'tripapp:delete_memo' memo_id=memo.id trip_id=trip_id %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn-flat-border">削除</button>
-        </form>
-        <!-- 編集フォーム（デフォルトでは非表示） -->
-        <div style="display:none;" id="editForm{{ memo.id }}">
-            <input type="text" id="editDetail{{ memo.id }}" value="{{ memo.detail }}">
-            <button onclick="saveChanges({{ memo.id }})" class="btn-flat-border">保存</button>
+
+<!-- 情報追加フォーム -->
+<div class="form-container">
+    <h2>情報の追加</h2>
+    <form method="post" action="{% url 'tripapp:memos' trip_id=trip_id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
         </div>
-        <!-- 編集ボタン -->
-        <button onclick="editMemo({{ memo.id }})" class="btn-flat-border">編集</button>
-    </div>
-    {% endfor %}
-    <div class="footer button-group">
-        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:addmemos' trip_id=trip_id %}'">新情報追加</button>
-        <button class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
-    </div>
+        <div class="button-group-centered">
+            <button type="submit" class="btn-circle-border-double">登録</button>
+            <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
+        </div>
+    </form>
 </div>
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>カテゴリー</th>
+                <th>詳細</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for memo in memos %}
+            <tr id="memo{{ memo.id }}">
+                <td>{{ memo.category }}</td>
+                <td>
+                    <p id="detail{{ memo.id }}" style="white-space: pre-line;">{{ memo.detail }}</p>
+                    <!-- 編集フォーム（デフォルトでは非表示） -->
+                    <div style="display:none;" id="editForm{{ memo.id }}">
+                        <input type="text" id="editDetail{{ memo.id }}" value="{{ memo.detail }}">
+                        <button onclick="saveChanges({{ memo.id }})" class="btn-flat-border">保存</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="button-group-inline">
+                        <!-- 編集ボタン -->
+                        <button onclick="editMemo({{ memo.id }})" class="btn-flat-border">編集</button>
+                        <!-- 削除ボタン -->
+                        <form action="{% url 'tripapp:delete_memo' memo_id=memo.id trip_id=trip_id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-flat-border btn-danger">削除</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
 <script>
 function editMemo(memoId) {
     var detailElement = document.getElementById('detail' + memoId);
@@ -45,7 +75,7 @@ function editMemo(memoId) {
 function saveChanges(memoId) {
     var newDetail = document.getElementById('editDetail' + memoId).value;
     var csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-    var url = `/tripapp/update_memo/1/`; // URLが正しいか確認してください
+    var url = `{% url 'tripapp:update_memo' trip_id=trip_id %}`;
 
     fetch(url, {
         method: 'POST',

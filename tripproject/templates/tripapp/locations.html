@@ -10,6 +10,7 @@
 
             addButton.addEventListener('click', function() {
                 const newInput = document.createElement('div');
+                newInput.className = 'form-group';
                 newInput.innerHTML = `
                     <p>
                         <label for="name">名称:</label>
@@ -20,6 +21,7 @@
                         <textarea name="address[]" required></textarea>
                     </p>
                     <button type="button" class="btn-flat-border" onclick="removeField(this)">削除</button>`;
+                    <button type="button" class="btn-flat-border btn-danger" onclick="removeField(this)">削除</button>`;
                 const dynamicField = document.getElementById('dynamic-field');
                 dynamicField.appendChild(newInput);
             });
@@ -40,14 +42,11 @@
         </nav>
 
         <h1>行きたいところ</h1>
-        <ul style="list-style-type: none; padding: 0;">
-            {% for location in locations %}
-            <li>{{ location.name }}: {{ location.address }} <a href="{% url 'tripapp:delete_location' location_id=location.id trip_id=trip_id %}" class="delete-link">削除</a></li>
-            {% endfor %}
-        </ul>
+
+        <!-- アイテム追加フォーム -->
         <form method="post" id="locations-form">
             {% csrf_token %}
-            <div id="dynamic-field">
+            <div id="dynamic-field" class="form-group">
                 <p>
                     <label for="name">名称:</label>
                     <input type="text" name="name[]" required>
@@ -58,13 +57,38 @@
                 </p>
             </div>
             <div>
-                <button type="button" class="btn-flat-border" id="add-location-button">新規追加</button>
+                <button type="button" class="btn-flat-border" id="add-location-button">入力欄追加</button>
             </div>
-            <div class="button-group">
+            <div class="button-group-centered">
                 <button type="submit" class="btn-circle-border-double">登録</button>
                 <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
             </div>
         </form>
+
+        <!-- 既存のロケーションリストのセクションをテーブルに変更 -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>住所</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for location in locations %}
+                <tr>
+                    <td>{{ location.name }}</td>
+                    <td>{{ location.address }}</td>
+                    <td>
+                        <form method="post" action="{% url 'tripapp:delete_location' location_id=location.id trip_id=trip_id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-flat-border btn-danger">削除</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

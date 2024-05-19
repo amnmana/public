@@ -76,7 +76,8 @@ class Item(models.Model):
 
 class Memo(models.Model):
     trip = models.ForeignKey('Trip', on_delete=models.CASCADE, null=True)
-    category = models.CharField(max_length=128) 
+    category = models.CharField(max_length=128)
+    category = models.CharField(max_length=128)
     detail = models.TextField()
 
     def __str__(self):
