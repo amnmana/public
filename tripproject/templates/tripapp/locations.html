@@ -3,35 +3,6 @@
 {% block content %}
 <div class="container">
     <div class="content">
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const addButton = document.getElementById('add-location-button');
-            const form = document.getElementById('locations-form');
-
-            addButton.addEventListener('click', function() {
-                const newInput = document.createElement('div');
-                newInput.className = 'form-group';
-                newInput.innerHTML = `
-                    <p>
-                        <label for="name">名称:</label>
-                        <input type="text" name="name[]" required>
-                    </p>
-                    <p>
-                        <label for="address">住所:</label>
-                        <textarea name="address[]" required></textarea>
-                    </p>
-                    <button type="button" class="btn-flat-border btn-danger" onclick="removeField(this)">削除</button>`;
-                const dynamicField = document.getElementById('dynamic-field');
-                dynamicField.appendChild(newInput);
-            });
-        });
-
-        function removeField(button) {
-            // ボタンが属するdiv要素を削除
-            button.parentNode.remove();
-        }
-        </script>
-
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'tripapp:mypage' %}">マイページ</a></li>
@@ -90,4 +61,33 @@
         </table>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addButton = document.getElementById('add-location-button');
+    const form = document.getElementById('locations-form');
+
+    addButton.addEventListener('click', function() {
+        const newInput = document.createElement('div');
+        newInput.className = 'form-group';
+        newInput.innerHTML = `
+            <p>
+                <label for="name">名称:</label>
+                <input type="text" name="name[]" required>
+            </p>
+            <p>
+                <label for="address">住所:</label>
+                <textarea name="address[]" required></textarea>
+            </p>
+            <button type="button" class="btn-flat-border btn-danger" onclick="removeField(this)">削除</button>`;
+        const dynamicField = document.getElementById('dynamic-field');
+        dynamicField.appendChild(newInput);
+    });
+});
+
+function removeField(button) {
+    // ボタンが属するdiv要素を削除
+    button.parentNode.remove();
+}
+</script>
 {% endblock %}
