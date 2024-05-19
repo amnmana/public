@@ -18,7 +18,7 @@ header.navbar {
 
 .navbar .container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -27,13 +27,20 @@ header.navbar {
     font-weight: bold;
     color: #333;
     text-decoration: none;
-    margin-right: auto;
 }
 
 .navbar .navbar-nav {
     display: flex;
-    gap: 20px;
-    margin-left: auto;
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+.nav-item.left {
+    margin-right: auto;
+}
+
+.nav-item.right {
+    margin-left: 10px; /* ボタン間の間隔を設定 */
 }
 
 .navbar .nav-item .nav-link {
@@ -103,6 +110,47 @@ main.container .details-list li {
     margin: 10px 0;
 }
 
+.breadcrumb {
+    text-align: left; /* 左端に配置 */
+    padding: 0;
+    margin: 50px 0 0 0; /* ヘッダーの下にマージンを追加 */
+    list-style: none;
+    display: flex;
+    font-size: 14px; /* フォントサイズを設定 */
+}
+
+.breadcrumb li {
+    display: inline;
+    font-weight: bold;
+    margin-right: 5px;
+    position: relative;
+    top: 5px; /* 文字の位置を下げる */
+}
+
+.breadcrumb li:after {
+    content: '>';
+    padding: 0 0.2em;
+    color: #555;
+}
+
+.breadcrumb li:last-child {
+    top: 15px; /* 現在のページの文字の位置を下げる */
+}
+
+.breadcrumb li:last-child:after {
+    content: '';
+}
+
+.breadcrumb li a {
+    text-decoration: none;
+    color: #52b5ee;
+    font-size: 20px; /* リンクのフォントサイズを変更 */
+}
+
+.breadcrumb li a:hover {
+    text-decoration: underline;
+}
+
 p {
     color: black;
     font-weight: bold;
@@ -117,36 +165,6 @@ a {
     font-style: italic;
     font-size: 30px;
     line-height: 2;
-}
-
-.breadcrumb, ol.breadcrumb {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.breadcrumb li, ol.breadcrumb li {
-    display: inline;
-    font-weight: bold;
-}
-
-.breadcrumb li:after, ol.breadcrumb li:after {
-    content: '>';
-    padding: 0 0.2em;
-    color: #555;
-}
-
-.breadcrumb li:last-child:after, ol.breadcrumb li:last-child:after {
-    content: '';
-}
-
-.breadcrumb li a, ol.breadcrumb li a {
-    text-decoration: none;
-    color: #52b5ee;
-}
-
-.breadcrumb li a:hover, ol.breadcrumb li a:hover {
-    text-decoration: underline;
 }
 
 .btn-flat-border {
@@ -181,4 +199,195 @@ a {
     display: flex;
     justify-content: center;
     gap: 10px; /* ボタン間の間隔を小さく設定 */
+}
+
+.button-group-inline {
+    display: flex;
+    gap: 10px; /* ボタン間のスペースを調整 */
+}
+
+.btn-flat-border {
+    margin-right: 10px; /* ボタン間のスペースを調整 */
+}
+
+/* memos.html */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.button-group-inline {
+    display: flex;
+    gap: 10px; /* ボタン間のスペースを調整 */
+}
+
+.form-container {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+}
+
+.table {
+    width: 80%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.button-group-inline {
+    display: flex;
+    gap: 10px; /* ボタン間のスペースを調整 */
+}
+
+.btn-flat-border {
+    margin-right: 10px; /* ボタン間のスペースを調整 */
+}
+
+.btn-danger {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 0.3em 1em; /* btn-flat-borderと同じパディングを設定 */
+    line-height: 20px; /* btn-flat-borderと同じラインハイトを設定 */
+    border-radius: 3px; /* btn-flat-borderと同じボーダー半径を設定 */
+    transition: .4s; /* btn-flat-borderと同じトランジションを設定 */
+    font-size: 14px; /* フォントサイズを設定 */
+    height: auto; /* ボタンの高さを自動調整 */
+    width: auto; /* ボタンの幅を自動調整 */
+}
+
+.btn-danger:hover {
+    background-color: darkred;
+}
+
+.button-group-centered {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* ボタン間のスペースを調整 */
+}
+
+/* items.html */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.button-group-centered {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* ボタン間のスペースを調整 */
+}
+
+.btn-flat-border {
+    margin-right: 10px; /* ボタン間のスペースを調整 */
+}
+
+.btn-danger {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 0.3em 1em; /* btn-flat-borderと同じパディングを設定 */
+    line-height: 20px; /* btn-flat-borderと同じラインハイトを設定 */
+    border-radius: 3px; /* btn-flat-borderと同じボーダー半径を設定 */
+    transition: .4s; /* btn-flat-borderと同じトランジションを設定 */
+    font-size: 14px; /* フォントサイズを設定 */
+    height: auto; /* ボタンの高さを自動調整 */
+    width: auto; /* ボタンの幅を自動調整 */
+}
+
+.btn-danger:hover {
+    background-color: darkred;
+}
+
+/* static/css/style.css */
+
+.photo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* 左端から始めるように変更 */
+    gap: 20px;
+}
+
+.photo-item {
+    width: calc(33.333% - 20px); /* 3列表示にするための幅調整 */
+    box-sizing: border-box;
+    text-align: center; /* 中央揃え */
+}
+
+.photo-item img {
+    width: 100%;
+    height: auto;
+    max-width: 300px; /* 最大幅を設定して大きすぎないように調整 */
+    display: block;
+    margin: 0 auto; /* 中央揃え */
+}
+
+.btn-danger {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 0.3em 1em; /* btn-flat-borderと同じパディングを設定 */
+    line-height: 20px; /* btn-flat-borderと同じラインハイトを設定 */
+    border-radius: 3px; /* btn-flat-borderと同じボーダー半径を設定 */
+    transition: .4s; /* btn-flat-borderと同じトランジションを設定 */
+    font-size: 14px; /* フォントサイズを設定 */
+    height: auto; /* ボタンの高さを自動調整 */
+    width: auto; /* ボタンの幅を自動調整 */
+}
+
+.btn-danger:hover {
+    background-color: darkred;
+}
+
+.button-group-centered {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* ボタン間のスペースを調整 */
+    margin-top: 20px; /* 追加したスペースのスタイルを統一 */
+}
+
+.delete-button-container {
+    margin-top: 40px; /* 写真リストとの間にスペースを追加 */
+}
+
+.form-group {
+    margin-bottom: 20px; /* 入力欄の間隔を設定 */
 }

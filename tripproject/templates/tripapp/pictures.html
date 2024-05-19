@@ -38,13 +38,17 @@
 <!-- 写真の表示 -->
 <form action="{% url 'tripapp:bulk_delete_pictures' trip_id=trip_id %}" method="post">
     {% csrf_token %}
-    {% for picture in pictures %}
-    <div>
-        <input type="checkbox" name="picture_ids" value="{{ picture.id }}">
-        <img src="{{ picture.image.url }}" alt="Picture" style="width: 300px; height: auto;">
+    <div class="photo-grid">
+        {% for picture in pictures %}
+        <div class="photo-item">
+            <input type="checkbox" name="picture_ids" value="{{ picture.id }}">
+            <img src="{{ picture.image.url }}" alt="Picture">
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-    <button type="submit" class="btn-flat-border">選択して削除</button>
+    <div class="button-group-centered delete-button-container">
+        <button type="submit" class="btn-flat-border btn-danger">選択して削除</button>
+    </div>
 </form>
 
 <!-- 戻るボタン -->

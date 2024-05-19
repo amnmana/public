@@ -12,49 +12,61 @@
         </nav>
         <h1>持ち物</h1>
 
-        <!-- アイテムリストのセクションをフォームよりも上に移動 -->
-        <ul style="list-style-type: none; padding: 0;">
-            {% for item in items %}
-                <li>
-                    <form method="POST" action="{% url 'tripapp:toggle_item_checked' item.id %}">
-                        {% csrf_token %}
-                        <input type="checkbox" name="checked" onchange="this.form.submit()" {% if item.checked %}checked{% endif %}>
-                        {{ item.name }}
-                    </form>
-                    <!-- 削除ボタンを追加 -->
-                    <form method="POST" action="{% url 'tripapp:delete_item' item_id=item.id trip_id=trip_id %}" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-flat-border">削除</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-
         <!-- アイテム追加フォーム -->
         <form id="itemsForm" method="POST" action="{% url 'tripapp:items' trip_id=trip_id %}">
             {% csrf_token %}
-            <div>
-                <!-- ここに既存のアイテムフィールドと削除ボタンを追加 -->
-                <input type="text" name="name"> <button type="button" class="btn-flat-border" onclick="deleteItem(this.parentNode)">削除</button>
+            <div class="form-group">
+                <input type="text" name="name" placeholder="新規アイテム">
             </div>
-            <div>
-                <!-- 新規登録ボタンをここに追加 -->
-                <button type="button" class="btn-flat-border" id="addNewItem" onclick="addItem()">新規追加</button>
+            <div id="newItems"></div>
+            <div class="button-group-centered">
+                <button type="button" class="btn-flat-border" id="addNewItem" onclick="addItem()">入力欄追加</button>
             </div>
-            <div class="button-group">
+            <div class="button-group-centered">
                 <button type="submit" class="btn-circle-border-double">登録</button>
                 <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
             </div>
         </form>
+
+        <!-- アイテムリストのセクションをテーブルに変更 -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">チェック</th>
+                    <th>アイテム</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <form method="POST" action="{% url 'tripapp:toggle_item_checked' item.id %}">
+                            {% csrf_token %}
+                            <input type="checkbox" name="checked" onchange="this.form.submit()" {% if item.checked %}checked{% endif %}>
+                        </form>
+                    </td>
+                    <td>{{ item.name }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'tripapp:delete_item' item_id=item.id trip_id=trip_id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-flat-border btn-danger">削除</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 
 <script>
 function addItem() {
-    var form = document.getElementById('itemsForm');
-    var newInput = document.createElement('div');
-    newInput.innerHTML = '<input type="text" name="name"> <button type="button" class="btn-flat-border" onclick="deleteItem(this.parentNode)">削除</button>';
-    form.insertBefore(newInput, form.children[form.children.length - 3]);
+    var newItemsDiv = document.getElementById('newItems');
+    var newItemDiv = document.createElement('div');
+    newItemDiv.className = 'form-group new-item';
+    newItemDiv.innerHTML = '<input type="text" name="name" placeholder="新規アイテム"> <button type="button" class="btn-flat-border" onclick="deleteItem(this.parentNode)">削除</button>';
+    newItemsDiv.appendChild(newItemDiv);
 }
 
 function deleteItem(item) {
