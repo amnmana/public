@@ -12,14 +12,14 @@
                 const newInput = document.createElement('div');
                 newInput.innerHTML = `
                     <p>
-                        <label for="name">Name:</label>
+                        <label for="name">名称:</label>
                         <input type="text" name="name[]" required>
                     </p>
                     <p>
-                        <label for="address">Address:</label>
+                        <label for="address">住所:</label>
                         <textarea name="address[]" required></textarea>
                     </p>
-                    <button type="button" class="btn-flat-border" onclick="removeField(this)">Delete</button>`;
+                    <button type="button" class="btn-flat-border" onclick="removeField(this)">削除</button>`;
                 const dynamicField = document.getElementById('dynamic-field');
                 dynamicField.appendChild(newInput);
             });
