@@ -11,21 +11,6 @@
 
 <h1>必要な情報</h1>
 
-<!-- 情報追加フォーム -->
-<div class="form-container">
-    <h2>情報の追加</h2>
-    <form method="post" action="{% url 'tripapp:memos' trip_id=trip_id %}">
-        {% csrf_token %}
-        <div class="form-group">
-            {{ form.as_p }}
-        </div>
-        <div class="button-group-centered">
-            <button type="submit" class="btn-circle-border-double">登録</button>
-            <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
-        </div>
-    </form>
-</div>
-
 <div class="table-container">
     <table class="table">
         <thead>
@@ -43,14 +28,13 @@
                     <p id="detail{{ memo.id }}" style="white-space: pre-line;">{{ memo.detail }}</p>
                     <!-- 編集フォーム（デフォルトでは非表示） -->
                     <div style="display:none;" id="editForm{{ memo.id }}">
-                        <input type="text" id="editDetail{{ memo.id }}" value="{{ memo.detail }}">
-                        <button onclick="saveChanges({{ memo.id }})" class="btn-flat-border">保存</button>
+                        <textarea id="editDetail{{ memo.id }}" style="width: 100%; height: 3em;">{{ memo.detail }}</textarea>
                     </div>
                 </td>
                 <td>
-                    <div class="button-group-inline">
+                    <div class="button-group-inline" id="buttonGroup{{ memo.id }}">
                         <!-- 編集ボタン -->
-                        <button onclick="editMemo({{ memo.id }})" class="btn-flat-border">編集</button>
+                        <button onclick="editMemo({{ memo.id }})" id="editButton{{ memo.id }}" class="btn-flat-border">編集</button>
                         <!-- 削除ボタン -->
                         <form action="{% url 'tripapp:delete_memo' memo_id=memo.id trip_id=trip_id %}" method="post" style="display:inline;">
                             {% csrf_token %}
@@ -64,12 +48,38 @@
     </table>
 </div>
 
+<!-- 情報追加フォーム -->
+<div class="form-container">
+    <h2>情報の追加</h2>
+    <form method="post" action="{% url 'tripapp:memos' trip_id=trip_id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <div class="button-group-centered">
+            <button type="submit" class="btn-circle-border-double">登録</button>
+            <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
+        </div>
+    </form>
+</div>
+
 <script>
 function editMemo(memoId) {
     var detailElement = document.getElementById('detail' + memoId);
     var editForm = document.getElementById('editForm' + memoId);
+    var editButton = document.getElementById('editButton' + memoId);
+    var saveButton = document.createElement('button');
+
     detailElement.style.display = 'none';
     editForm.style.display = 'block';
+
+    saveButton.innerText = '保存';
+    saveButton.className = 'btn-flat-border';
+    saveButton.onclick = function() {
+        saveChanges(memoId);
+    };
+
+    editButton.parentNode.replaceChild(saveButton, editButton);
 }
 
 function saveChanges(memoId) {
@@ -93,10 +103,19 @@ function saveChanges(memoId) {
     .then(data => {
         if (data.status === 'success') {
             var detailElement = document.getElementById('detail' + memoId);
+            var editForm = document.getElementById('editForm' + memoId);
+            var buttonGroup = document.getElementById('buttonGroup' + memoId);
+            var saveButton = buttonGroup.querySelector('button');
+
             detailElement.innerText = newDetail;
             detailElement.style.display = 'block';
-            var editForm = document.getElementById('editForm' + memoId);
             editForm.style.display = 'none';
+
+            // Replace the save button back to edit button
+            saveButton.innerText = '編集';
+            saveButton.onclick = function() {
+                editMemo(memoId);
+            };
         } else {
             alert('更新に失敗しました。');
         }

@@ -12,22 +12,6 @@
         </nav>
         <h1>持ち物</h1>
 
-        <!-- アイテム追加フォーム -->
-        <form id="itemsForm" method="POST" action="{% url 'tripapp:items' trip_id=trip_id %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <input type="text" name="name" placeholder="新規アイテム">
-            </div>
-            <div id="newItems"></div>
-            <div class="button-group-centered">
-                <button type="button" class="btn-flat-border" id="addNewItem" onclick="addItem()">入力欄追加</button>
-            </div>
-            <div class="button-group-centered">
-                <button type="submit" class="btn-circle-border-double">登録</button>
-                <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
-            </div>
-        </form>
-
         <!-- アイテムリストのセクションをテーブルに変更 -->
         <table class="table">
             <thead>
@@ -57,6 +41,19 @@
                 {% endfor %}
             </tbody>
         </table>
+
+        <!-- アイテム追加フォーム -->
+        <form id="itemsForm" method="POST" action="{% url 'tripapp:items' trip_id=trip_id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" name="name" placeholder="新規アイテム">
+            </div>
+            <div id="newItems"></div>
+            <div class="button-group-centered">
+                <button type="submit" class="btn-circle-border-double">登録</button>
+                <button type="button" class="btn-circle-border-double" onclick="window.location.href='{% url 'tripapp:tripdetails' trip_id=trip_id %}'">戻る</button>
+            </div>
+        </form>
     </div>
 </div>
 
